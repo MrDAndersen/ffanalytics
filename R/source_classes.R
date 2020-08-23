@@ -564,7 +564,7 @@ json_source <- R6::R6Class(
 
       if(!is.null(self$stat_elem)){
         stats <- self$stat_elem
-        stat_cols <- json_res %>% map(`[[`, stats) %>% map(as.tibble) %>% bind_rows()
+        stat_cols <- json_res %>% map(`[[`, stats) %>% map(as_tibble) %>% bind_rows()
 
         if(!is.null(self$player_elem)){
           player_info <- self$player_elem
@@ -573,12 +573,12 @@ json_source <- R6::R6Class(
         }
 
         data_table <- json_res %>%
-          map(`[`, player_info) %>% map(discard, is.null) %>% map(as.tibble) %>% bind_rows()
+          map(`[`, player_info) %>% map(discard, is.null) %>% map(as_tibble) %>% bind_rows()
 
         data_table <- data_table %>%
           bind_cols(stat_cols)
       } else {
-        data_table <- json_res %>%  map(as.tibble) %>% bind_rows()
+        data_table <- json_res %>%  map(as_tibble) %>% bind_rows()
       }
 
       if(private$data_host() == "api.fantasy.nfl.com"){

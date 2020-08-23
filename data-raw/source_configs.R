@@ -239,7 +239,7 @@ html_sites <- list(
       pass_4049_tds = "40-49 Pass TDs", pass_50_tds = "50+ Pass TDs", pass_int = "Int",
       sacks = "Sck", pass_250_yds = ">= 250 yd", pass_300_yds = ">= 300 yd",
       pass_350_yds = ">= 350 yd", pass_400_yds =  ">= 400 yd", rush_att = "Rush",
-      rush_yds = "Rush Yds", rush_tds = "Rush TDs", rush_09_tds = "0-9 Rsh TDs",
+      rush_yds = "Rsh Yds", rush_tds = "Rsh TDs", rush_09_tds = "0-9 Rsh TDs",
       rush_1019_tds = "10-19 Rsh TDs", rush_2029_tds = "20-29 Rsh TDs",
       rush_3039_tds = "30-39 Rsh TDs", rush_4049_tds = "40-49 Rsh TDs",
       rush_50_tds = "50+ Rsh TDs", rxx_50_yds = ">= 50 yd", rxx_100_yds = ">= 100 yd",

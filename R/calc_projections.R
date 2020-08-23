@@ -142,7 +142,7 @@ points_sd <- function(src_pts, weights = NULL){
            weight = if_else(n_obs == 1 & weight == 0, 1, weight)) %>%
     ungroup() %>% select(-n_obs) %>%
     split(.$pos) %>% map(~ split(.x, .x$id)) %>%
-    modify_depth(2, ~ get_sd(.x$points, .x$weight)) %>% modify_depth(2, as.tibble) %>%
+    modify_depth(2, ~ get_sd(.x$points, .x$weight)) %>% modify_depth(2, as_tibble) %>%
     modify_depth(1, bind_rows, .id = "id") %>% bind_rows(.id = "pos") %>%
     gather("avg_type", "sd_pts", -id, -pos)
 }
@@ -165,7 +165,7 @@ confidence_interval <- function(src_pts, weights = NULL){
     ungroup() %>% select(-n_obs) %>%
     split(.$pos) %>% map(~ split(.x, .x$id)) %>%
     modify_depth(2, ~ get_quant(.x$points, .x$weight)) %>% modify_depth(3, t) %>%
-    modify_depth(3, as.tibble) %>% modify_depth(2, bind_rows, .id  = "avg_type") %>%
+    modify_depth(3, as_tibble) %>% modify_depth(2, bind_rows, .id  = "avg_type") %>%
     modify_depth(1, bind_rows, .id = "id") %>% bind_rows(.id = "pos") %>%
     mutate(`5%` = ifelse(is.na(`5%`),` 5%`, `5%`)) %>% select(-` 5%`) %>%
     rename(floor = "5%", ceiling = "95%")

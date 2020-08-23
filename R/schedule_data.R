@@ -1,4 +1,4 @@
-schedule_url <- "https://api.myfantasyleague.com/2019/export?TYPE=nflSchedule&W=ALL&JSON=1"
+schedule_url <- "https://api.myfantasyleague.com/2020/export?TYPE=nflSchedule&W=ALL&JSON=1"
 
 schedule_data <- schedule_url %>% httr::GET() %>% httr::content() %>%
   .[[c("fullNflSchedule", "nflSchedule")]] %>% purrr:::keep(~ "matchup" %in% names(.))
@@ -15,14 +15,16 @@ first_last_games <- schedule_data[-21] %>% purrr::modify_depth(2, `[[`, "kickoff
   purrr::map(~ as.POSIXct(as.numeric(.x), origin = "1970-01-01")) %>%
   purrr::map(`names<-`, c("first", "last"))
 
-first_last_games$week21 <- setNames(rep(as.POSIXct(as.numeric(schedule_data$week_21$match_1), origin = "1970-01-01"), 2), 
-                                    c("first", "last"))
+if(any(names(first_last_games) == "week_21")){
+  first_last_games$week21 <- setNames(rep(as.POSIXct(as.numeric(schedule_data$week_21$match_1), origin = "1970-01-01"), 2),
+                                      c("first", "last"))
+}
 
 scrape_start_date <- first_last_games %>% purrr::map_chr(`[[`, "last") %>% lag %>% as.numeric() %>%
   as.POSIXct(origin = "1970-01-01") %>% as.Date()
 
 scrape_start_date[1] <-  first_last_games %>% purrr::map_chr(`[[`, "first") %>% min %>% as.numeric() %>%
-  as.POSIXct(origin = "1970-01-01") %>% as.Date() %>% `-`(7) # I would use below code, this adds a day because 
+  as.POSIXct(origin = "1970-01-01") %>% as.Date() %>% `-`(7) # I would use below code, this adds a day because
 # 20:20 EDT bumps it to the next day UTC when switching to as.Date()
 
 scrape_start_date[1] <- as.Date(format(first_last_games$week_1[["first"]], format = "%Y-%m-%d")) - 7L
